@@ -8,7 +8,7 @@
 - CPU can be used for inference, GPU support is only in the CUDA packages.
 - Debian packages are generated from the built binary files for distribution.
 - The build contains e.g. the C/C++ API to load model "snapshots" or frozen models. Other parts of the C++ API is included, but they are untested.
-- CUDA support with Tensorflow 1.13.1 requires to all GPU memory available for inference by default otherwise it drops error message. To allow_growth option must be set to allow multiple processes doing inference on the same GPU. See in the example codes below.
+- CUDA support with Tensorflow 1.14.0 requires to all GPU memory available for inference by default otherwise it drops error message. To allow_growth option must be set to allow multiple processes doing inference on the same GPU. See in the example codes below.
 
 ## Status
 
@@ -28,12 +28,12 @@ These results are generated with the same frozen graph (.pb file). The C/C++ inf
 
 - You must install some dependencies for **Ubuntu Bionic x86_64**:
 ```
-sudo apt-get install libdouble-conversion-dev libfarmhash-dev libre2-dev libgif-dev libpng-dev libsqlite3-dev libsnappy-dev liblmdb-dev
+sudo apt-get install libdouble-conversion-dev libfarmhash-dev libre2-dev libgif-dev libpng-dev libsqlite3-dev libsnappy-dev liblmdb-dev libicu-dev libjsoncpp-dev
 ```
 
 ### Dependencies for the latest CUDA packages
 
-You must install CUDA 10.1 from the official Nvidia repositories and Bazel 0.21.0 for Tensorflow. Other configurations are not supported.
+You must install CUDA 10.1 from the official Nvidia repositories and Bazel 0.25.2 for Tensorflow. Other configurations are not supported.
 
 ### Dependencies for Raspberry Pi packages
 
@@ -50,10 +50,10 @@ Nothing.
 - Install Bazel: https://docs.bazel.build/versions/master/install-ubuntu.html
 - These build dependencies must be installed on **Ubuntu Bionic x86_64**:
 ```
-sudo apt-get install make g++-6 gcc-6 cmake git dpkg-dev debhelper quilt python3 autogen autoconf libtool fakeroot golang pxz
+sudo apt-get install make g++-6 gcc-6 cmake git dpkg-dev debhelper quilt python3 autogen autoconf libtool fakeroot golang pxz libicu-dev python python-future ccache
 ```
 
-Current Protobuf in Tensorflow 1.13.1 does not compile with gcc 7.3+/8. We must install gcc 6 to build Tensorflow. Be sure that "gcc -v" and "g++ -v" shows a 6.x version: e.g. "gcc version 6.5.0 20181026 (Ubuntu 6.5.0-2ubuntu1~18.04)" before building the packages. Using the packages does not require these specific gcc/g++ versions.
+Current Protobuf in Tensorflow 1.14.0 does not compile with gcc 7.3+/8. We must install gcc 6 to build Tensorflow. Be sure that "gcc -v" and "g++ -v" shows a 6.x version: e.g. "gcc version 6.5.0 20181026 (Ubuntu 6.5.0-2ubuntu1~18.04)" before building the packages. Using the packages does not require these specific gcc/g++ versions.
 
 - These build dependencies must be installed on **Raspberry Pi**:
 ```
@@ -79,7 +79,7 @@ Latest master:
 ```
 ./1_clone_tensorflow.sh v1.6.0
 ```
-- Make the python package to extract include files for C++:
+- Make the python package to extract include files for C++. Define NO_TF_PACKAGING_CUDA environmental variable to disable CUDA support or use TF_PACKAGING_LEGACY_CPU for older CPUs (AMD FX):
 ```
 ./2_make_wheel_for_headers.sh
 ```

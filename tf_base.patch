@@ -1,3 +1,17 @@
+diff --git a/tensorflow/contrib/cmake/CMakeLists.txt b/tensorflow/contrib/cmake/CMakeLists.txt
+index 44431d5010..cb8a7fd8c8 100644
+--- a/tensorflow/contrib/cmake/CMakeLists.txt
++++ b/tensorflow/contrib/cmake/CMakeLists.txt
+@@ -1,6 +1,9 @@
+ # Minimum CMake required
+ cmake_minimum_required(VERSION 3.5)
+
++SET_PROPERTY(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
++SET_PROPERTY(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
++
+ if(WIN32)
+        if(${CMAKE_VERSION} VERSION_LESS "3.8")
+                message(WARNING "Your current cmake version is ${CMAKE_VERSION} which does not support setting the toolset architecture to x64. This may cause \"compiler out of heap space\" errors when building. Consider upgrading your cmake to > 3.8 and using the flag -Thost=x64 when running cmake. Ignore this if you are on CMake GUI.")
 diff --git a/tensorflow/c/eager/c_api.cc b/tensorflow/c/eager/c_api.cc
 index dfb1c9a376..248ed67450 100644
 --- a/tensorflow/c/eager/c_api.cc
@@ -296,6 +310,15 @@ diff --git a/tensorflow/contrib/cmake/tf_tools.cmake b/tensorflow/contrib/cmake/
 index 58c7df95c8..28443c9bf6 100644
 --- a/tensorflow/contrib/cmake/tf_tools.cmake
 +++ b/tensorflow/contrib/cmake/tf_tools.cmake
+@@ -32,7 +32,7 @@ target_link_libraries(${proto_text} PUBLIC
+   tf_protos_cc
+ )
+ 
+-add_dependencies(${proto_text} tf_core_lib)
++add_dependencies(${proto_text} tf_core_lib abseil_cpp)
+ if(tensorflow_ENABLE_GRPC_SUPPORT)
+     add_dependencies(${proto_text} grpc)
+ endif(tensorflow_ENABLE_GRPC_SUPPORT)
 @@ -58,94 +58,94 @@ add_dependencies(tf_tools_transform_graph_lib tf_core_kernels)
  add_dependencies(tf_tools_transform_graph_lib tf_core_lib)
  add_dependencies(tf_tools_transform_graph_lib tf_core_ops)
